@@ -7,6 +7,7 @@ exports.up = async function (knex) {
     .createTable("recipes", (table) => {
       table.increments("recipe_id");
       table.text("recipe_name", 128).notNullable().unique();
+      table.timestamp("created_at").defaultTo(knex.fn.now());
     })
     .createTable("ingredients", (table) => {
       table.increments("ingredient_id");
@@ -22,8 +23,8 @@ exports.up = async function (knex) {
         .notNullable()
         .references("recipe_id")
         .inTable("recipes")
-        .onDelete("RESTRICT")
-        .onUpdate("RESTRICT");
+        .onDelete("CASCADE")
+        .onUpdate("CASCADE");
     })
     .createTable("steps_ingredients", (table) => {
       table.increments("steps_ingredients_id");
@@ -33,17 +34,17 @@ exports.up = async function (knex) {
         .notNullable()
         .references("step_id")
         .inTable("steps")
-        .onDelete("RESTRICT")
-        .onUpdate("RESTRICT"); 
+        .onDelete("CASCADE")
+        .onUpdate("CASCADE"); 
       table
         .integer("ingredient_id")
         .unsigned()
         .notNullable()
         .references("ingredient_id")
         .inTable("ingredients")
-        .onDelete("RESTRICT")
-        .onUpdate("RESTRICT"); 
-      table.float("quantity").unsigned().notNullable()
+        .onDelete("CASCADE")
+        .onUpdate("CASCADE"); 
+      table.float("quantity_KG").unsigned().notNullable()
     });
 };
 

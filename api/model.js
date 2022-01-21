@@ -1,25 +1,20 @@
-// const db = require('../data/db-config.js');
+const e = require("express");
+const db = require("../data/db-config");
 
-// // function getSpecies() {
-// //   return db('species');
-// // }
+async function getRecipeById() { 
 
-// // function getAnimals() { // INCLUDING SPECIES NAME
-// //   return
-// // }
+    const rows = await db('schemes as sc')
+    .leftJoin('steps as st', 'sc.scheme_id', 'st.scheme_id')
+    .groupBy('sc.scheme_id')
+    .select('sc.*')
+    .count('st.step_id as number_of_steps')
+    return rows
 
-// // async function createAnimal(animal) {
- 
-// //   return getAnimals().where({ animal_id }).first();
-// // }
+    
+}
 
-// // function deleteSpecies(species_id) {
-// //   return db('species').where({ species_id }).del();
-// // }
 
-// // module.exports = {
-// //   getSpecies,
-// //   getAnimals,
-// //   createAnimal,
-// //   deleteSpecies,
-// // };
+
+module.exports = {
+  getRecipeById
+}
